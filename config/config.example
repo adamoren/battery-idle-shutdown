@@ -1,0 +1,11 @@
+# Copied to ~/.config/battery-idle-shutdown/config on install.
+# Edit the copy, not this file.
+
+# Shut down once battery capacity drops to/below this percent while discharging.
+BATTERY_THRESHOLD=50
+
+# Seconds of no keyboard/mouse/touchpad input before we consider the session idle.
+IDLE_SECONDS=600
+
+# Seconds of warning notification shown before poweroff actually fires.
+GRACE_SECONDS=20

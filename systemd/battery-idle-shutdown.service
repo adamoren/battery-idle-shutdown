@@ -1,0 +1,6 @@
+[Unit]
+Description=Check idle+battery state and power off if thresholds are met
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/battery-idle-shutdown.sh
