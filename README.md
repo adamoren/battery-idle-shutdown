@@ -1,5 +1,8 @@
 # battery-idle-shutdown
 
+[![shellcheck](https://github.com/adamoren/battery-idle-shutdown/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/adamoren/battery-idle-shutdown/actions/workflows/shellcheck.yml)
+[![tests](https://github.com/adamoren/battery-idle-shutdown/actions/workflows/tests.yml/badge.svg)](https://github.com/adamoren/battery-idle-shutdown/actions/workflows/tests.yml)
+
 Simulates "hibernation" on laptops that don't support real suspend-to-disk
 (e.g. Apple Silicon Macs under Asahi Linux, where hibernation isn't
 implemented). Instead of sleeping indefinitely and slowly draining the
