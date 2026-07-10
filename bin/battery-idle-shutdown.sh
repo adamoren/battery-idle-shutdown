@@ -14,9 +14,10 @@ CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/battery-idle-shutdown/config"
 BATTERY_THRESHOLD="${BATTERY_THRESHOLD:-50}"
 GRACE_SECONDS="${GRACE_SECONDS:-20}"
 FLAG_FILE="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/battery-idle-shutdown.idle"
+POWER_SUPPLY_DIR="${POWER_SUPPLY_DIR:-/sys/class/power_supply}"
 
 battery_dir=""
-for psu in /sys/class/power_supply/*; do
+for psu in "$POWER_SUPPLY_DIR"/*; do
   [ -f "$psu/type" ] || continue
   if [ "$(cat "$psu/type")" = "Battery" ]; then
     battery_dir="$psu"

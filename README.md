@@ -58,3 +58,19 @@ after editing, if you changed `IDLE_SECONDS`).
   etc.) rather than a full desktop session restore.
 - The shutdown always re-checks conditions after the grace period, so
   plugging in or returning to the machine during the warning cancels it.
+- On dual-battery laptops (e.g. some ThinkPads), only the first battery
+  reported under `/sys/class/power_supply` is checked.
+
+## Testing
+
+```sh
+sudo dnf install bats shellcheck   # or apt/pacman equivalents
+shellcheck bin/*.sh install.sh uninstall.sh tests/*.bats
+bats tests/
+```
+
+Tests mock `systemctl`/`notify-send`/`swayidle` via `PATH` and point the
+scripts at a fake `/sys/class/power_supply` directory (via the
+`POWER_SUPPLY_DIR` override) and a fake `$XDG_RUNTIME_DIR`, so they never
+touch real hardware or actually power off the machine running them. Both
+GitHub Actions workflows (`shellcheck`, `tests`) run on every push.

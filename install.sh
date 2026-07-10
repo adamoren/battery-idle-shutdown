@@ -8,20 +8,25 @@ config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/battery-idle-shutdown"
 systemd_user_dir="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 
 echo "==> Checking dependencies (swayidle, notify-send)"
-missing=()
-command -v swayidle >/dev/null 2>&1 || missing+=(swayidle)
-command -v notify-send >/dev/null 2>&1 || missing+=(libnotify)
+missing_dnf=()
+missing_apt=()
+missing_pacman=()
+command -v swayidle >/dev/null 2>&1 || { missing_dnf+=(swayidle); missing_apt+=(swayidle); missing_pacman+=(swayidle); }
+# The libnotify CLI package is named differently across distros.
+command -v notify-send >/dev/null 2>&1 || { missing_dnf+=(libnotify); missing_apt+=(libnotify-bin); missing_pacman+=(libnotify); }
 
-if [ "${#missing[@]}" -gt 0 ]; then
-  echo "Installing: ${missing[*]}"
+if [ "${#missing_dnf[@]}" -gt 0 ]; then
   if command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y "${missing[@]}"
+    echo "Installing: ${missing_dnf[*]}"
+    sudo dnf install -y "${missing_dnf[@]}"
   elif command -v apt >/dev/null 2>&1; then
-    sudo apt install -y "${missing[@]}"
+    echo "Installing: ${missing_apt[*]}"
+    sudo apt install -y "${missing_apt[@]}"
   elif command -v pacman >/dev/null 2>&1; then
-    sudo pacman -S --needed --noconfirm "${missing[@]}"
+    echo "Installing: ${missing_pacman[*]}"
+    sudo pacman -S --needed --noconfirm "${missing_pacman[@]}"
   else
-    echo "Unknown package manager; install manually: ${missing[*]}" >&2
+    echo "Unknown package manager; install manually: ${missing_dnf[*]}" >&2
     exit 1
   fi
 fi
