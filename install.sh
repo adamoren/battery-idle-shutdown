@@ -72,6 +72,22 @@ if [ "${XDG_CURRENT_DESKTOP:-}" = "KDE" ]; then
   else
     printf '[General]\nloginMode=restorePreviousLogout\n' >> "$ksmserverrc"
   fi
+
+  echo "==> KDE detected: disabling suspend-on-lid-close (powerdevil LidAction=NoAction)"
+  echo "    Otherwise closing the lid suspends the machine immediately, which freezes"
+  echo "    the idle timer and the battery-check timer before they ever get to run."
+  if command -v kwriteconfig6 >/dev/null 2>&1; then
+    for profile in AC Battery LowBattery; do
+      kwriteconfig6 --file powerdevilrc --group "$profile" --group SuspendAndShutdown --key LidAction 0
+    done
+    if command -v busctl >/dev/null 2>&1; then
+      busctl --user call org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement \
+        org.kde.Solid.PowerManagement refreshStatus >/dev/null 2>&1 || true
+    fi
+  else
+    echo "kwriteconfig6 not found; set 'When laptop lid closed' to 'Do nothing' manually" >&2
+    echo "in System Settings > Power Management > Energy Saving (AC and Battery tabs)." >&2
+  fi
 else
   echo "Non-KDE desktop (${XDG_CURRENT_DESKTOP:-unknown}) detected."
   echo "Session restore on next login is desktop-specific -- for GNOME/other"

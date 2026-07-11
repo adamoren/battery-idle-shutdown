@@ -25,6 +25,14 @@ drifted down to a chosen level -- and restores your session on next login.
   effort" restore (whatever the DE/apps support), not a real memory
   snapshot -- unsaved work in apps without their own session restore will
   be lost.
+- **Lid close**: on KDE, closing the lid suspends the machine by default
+  (`powerdevil`'s `LidAction`), which happens within about a second --
+  long before the idle timeout or the 2-minute battery-check timer ever
+  get a chance to run. The installer sets `LidAction=NoAction` for the
+  `AC`/`Battery`/`LowBattery` power profiles in `~/.config/powerdevilrc`
+  so the machine keeps running (screen off, lid closed) until *this
+  tool's* idle+battery logic decides to power off. Without this, the
+  whole mechanism silently never fires.
 
 ## Requirements
 

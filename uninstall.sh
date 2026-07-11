@@ -17,3 +17,6 @@ systemctl --user daemon-reload
 
 echo "Removed units and scripts. Config left at $config_dir (delete manually if unwanted)."
 echo "Note: ksmserverrc loginMode setting (KDE session restore) was left untouched."
+echo "Note: powerdevil's LidAction=NoAction (disabled suspend-on-lid-close) was left"
+echo "untouched -- re-enable via System Settings > Power Management > Energy Saving"
+echo "if you want closing the lid to suspend the machine again."
